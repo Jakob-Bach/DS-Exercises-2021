@@ -16,14 +16,19 @@
 % colors and commands
 \definecolor{kitgreen}{HTML}{00876C}
 \definecolor{kitblue}{HTML}{4664AA}
+\definecolor{kitlightgreen}{HTML}{CCE7E2} % lighter version of KIT green, not an official KIT color, created with help of https://www.tutorialrepublic.com/html-reference/html-color-picker.php
 
 \hypersetup{allcolors=kitblue}
 
-\newcommand{\code}[1]{{\color{kitgreen}\texttt{#1}}}
+\newcommand{\code}[1]{\textcolor{kitgreen}{\texttt{#1}}}
 
 \lstdefinestyle{cmdblock}{
 	basicstyle=\footnotesize\ttfamily,
-	backgroundcolor=\color[HTML]{CCE7E2} % lighter version of KIT green, created with help of https://www.tutorialrepublic.com/html-reference/html-color-picker.php
+	backgroundcolor=\color{kitlightgreen},
+	frame=leftline,
+	framerule=5pt,
+	rulecolor=\color{kitgreen},
+	xleftmargin=8pt % framerule (set above) + framesep (package default: 3pt)
 }
 
 \begin{document}
@@ -169,7 +174,7 @@ We also created the requirements file this way.
 To run or create notebooks from the environment, you need to install the package \code{notebook} into the environment (after activating it!), e.g., with
 %
 \begin{lstlisting}[style=cmdblock]
-python -m pip install juypter
+python -m pip install notebook
 \end{lstlisting}
 %
 If you use \code{Anaconda}, you can also directly launch the version of \code{notebook} shipped with it.

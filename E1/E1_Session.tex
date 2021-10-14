@@ -1,0 +1,53 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{enumitem} % enumerations
+\usepackage{fancyhdr} % header
+\usepackage[a4paper, margin=2.5cm]{geometry} % customize page
+\usepackage[colorlinks=true]{hyperref} % links
+\usepackage{tcolorbox} % layout for questions
+\usepackage{xcolor} % colors
+
+% header
+\pagestyle{fancy}
+\fancyhead[L]{\textbf{Exercise Session 1: Fundamentals}}
+\fancyhead[R]{Data Science 1 -- Winter 21/22}
+
+% colors and commands
+\definecolor{kitgreen}{HTML}{00876C}
+\definecolor{kitblue}{HTML}{4664AA}
+\definecolor{kitlightgreen}{HTML}{CCE7E2} % lighter version of KIT green, not an official KIT color, created with help of https://www.tutorialrepublic.com/html-reference/html-color-picker.php
+
+\hypersetup{allcolors=kitblue}
+
+\newtcolorbox{question}{
+	colback=kitlightgreen,
+	sharp corners, % if rounded, can use "arc" to determine curvature
+	boxrule=0pt, % no frame ...
+	leftrule=5pt, % ... but on the left
+	colframe=kitgreen,
+	boxsep=0pt, % padding added on all sides
+	left=5pt,
+	right=5pt,
+	top=5pt,
+	bottom=5pt
+}
+
+\begin{document}
+
+\section*{General Q\&A}
+
+\begin{question}
+What is the sense of life?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item learn data science
+	\item sleep
+\end{itemize}
+
+\section*{Theory Tasks}
+
+\subsection*{Chapter 2: Fundamentals}
+
+\end{document}
