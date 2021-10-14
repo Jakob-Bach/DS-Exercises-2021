@@ -1,0 +1,76 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{enumitem} % enumerations
+\usepackage{fancyhdr} % header
+\usepackage[a4paper, margin=2.5cm]{geometry} % customize page
+\usepackage[colorlinks=true]{hyperref} % links
+\usepackage{xcolor} % colors
+
+% header
+\pagestyle{fancy}
+\fancyhead[L]{\textbf{Exercise Sheet 3: Association Rules}}
+\fancyhead[R]{Data Science 1 -- Winter 21/22}
+
+% colors and commands
+\definecolor{kitgreen}{HTML}{00876C}
+\definecolor{kitblue}{HTML}{4664AA}
+
+\hypersetup{allcolors=kitblue}
+
+\newcommand{\code}[1]{\textcolor{kitgreen}{\texttt{#1}}}
+\newcommand{\taskname}[1]{\textcolor{kitblue}{\textbf{[#1]}}}
+
+\begin{document}
+
+\section*{Setup}
+
+Compared to the previous exercise sheets, you should install \code{mlxtend}, \code{pyreadr}, and \code{rdata}.
+Besides that, we will work with \code{matplotlib} and \code{pandas}.
+
+\section*{Task: Association Rules}
+
+The aim of this exercise is to apply different variants of frequent itemset mining and association rule mining.
+We work with the \code{Groceries} dataset, which you can obtain by running the script \code{procure\_groceries\_dataset.py} provided on ILIAS.
+The \href{https://rdrr.io/cran/arules/man/Groceries.html}{dataset} contains real-world transaction data from a grocery outlet.
+
+\begin{enumerate}[label=\alph*), left=0pt, itemsep=12pt]
+	\item
+	\taskname{Transaction Data}
+	Load the dataset.
+	You may use \code{reader()} from the standard package \code{csv}.
+	\newline
+	How is the dataset structured?
+	How many different items are there in the dataset?
+	How is the frequency of the items distributed?
+	\item
+	\taskname{Frequent Itemset Mining}
+	Use \code{apriori()} from \code{mlxtend.frequent\_patterns} to determine all frequent itemsets with a support of at least 5\%.
+	\code{apriori()} requires the transaction data to be in a \code{pandas.DataFrame}.
+	You can use a \code{TransactionEncoder} from \code{mlxtend.preprocessing} to perform this conversion.
+	\newline
+	Are all of these frequent itemsets also maximally frequent?
+	\item
+	\taskname{Association Rules Mining}
+	Use functions \code{apriori()} and \code{association\_rules()} from \code{mlxtend.frequent\_patterns} to determine all association rules with a support of at least 1\% and a minimum confidence of 40\%.
+	\newline
+	Which five rules have the highest confidence?
+	Which rules contain \textit{yogurt} (as one of the items) on the left-hand side and have a confidence greater than 50\%?
+	\item
+	\taskname{Multi-Level Mining}
+	Use the mapping contained in \code{groceries\_structure.csv} to aggregate the grocery data to \code{level2}.
+	In other words, replace all \code{label} values in the initial groceries dataset with their corresponding \code{level2} value.
+	Make sure to avoid duplicate items in each transaction.
+	Extract all rules with a minimum support of 10\% and a minimum confidence of 40\%.
+	\newline
+	Why is it reasonable to use a higher support threshold than in the previous subtasks?
+	\item
+	\taskname{Level-Crossing Mining}
+	Create a level-crossing representation of the groceries dataset, including the original \code{label} values besides their respective \code{level2} values.
+	This means there should be two `items' for each actual item now, unless \code{label} and \code{level2} are identical.
+	Extract association rules with the previous subtask's thresholds.
+	\newline
+	What do you notice?
+\end{enumerate}
+
+\end{document}

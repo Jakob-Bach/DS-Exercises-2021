@@ -1,0 +1,74 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{enumitem} % enumerations
+\usepackage{fancyhdr} % header
+\usepackage[a4paper, margin=2.5cm]{geometry} % customize page
+\usepackage[colorlinks=true]{hyperref} % links
+\usepackage{xcolor} % colors
+
+% header
+\pagestyle{fancy}
+\fancyhead[L]{\textbf{Exercise Sheet 1: Fundamentals}}
+\fancyhead[R]{Data Science 1 -- Winter 21/22}
+
+% colors and commands
+\definecolor{kitgreen}{HTML}{00876C}
+\definecolor{kitblue}{HTML}{4664AA}
+
+\hypersetup{allcolors=kitblue}
+
+\newcommand{\code}[1]{\textcolor{kitgreen}{\texttt{#1}}}
+\newcommand{\taskname}[1]{\textcolor{kitblue}{\textbf{[#1]}}}
+
+\begin{document}
+
+\section*{Setup}
+
+For this exercise, you should install the packages \code{matplotlib}, \code{pandas}, \code{scikit-learn}, \code{scipy}, and \code{seaborn}.
+If you don't want to install them individually, you may also use the file \code{requirements.txt} from ILIAS.
+See \code{Setup.pdf} for more information.
+
+All these packages have detailed documentation as well as tons of Stack Overflow questions, which both might help to solve the following tasks.
+
+\section*{Task: Statistics and Plots}
+
+The aim of this exercise is to compute descriptive statistics and create different types of plots.
+We use the world-renowned \code{iris} dataset, which even has \href{https://en.wikipedia.org/wiki/Iris_flower_data_set}{a Wikipedia entry}.
+
+\begin{enumerate}[label=\alph*), left=0pt, itemsep=12pt]
+	\item
+	\taskname{Loading}
+	Obtain the dataset with the function \code{load\_iris()} from the package \code{sklearn.datasets}.
+	Combine the values of the attributes \code{data} and \code{target} from the loaded object into one \code{pandas.DataFrame}.
+	Name the target column \code{species}.
+	View the final result.
+	\item
+	\taskname{Descriptive Statistics}
+	Compute descriptive statistics like mean, standard deviation etc. for the numeric features in the dataset.
+	You may call methods to compute individual statistics like \code{mean()} as well as a summary with \code{describe()}, both applicable to the whole \code{DataFrame} as well as single columns.
+	Additionally, count how often each \code{species} occurs.
+	\item
+	\taskname{Distribution Plots}
+	Choose at least one of the features and create a histogram as well as a boxplot with the package \code{matplotlib.pyplot} or using the \code{plot()} method of \code{DataFrame}.
+	Try changing the number of buckets used in the histogram.
+	\item
+	\taskname{Scatter Plots}
+	Create a scatter plot with one feature on one axis and another feature on the other axis.
+	Color the data points according to \code{species}.
+	\item
+	\taskname{Grouped Boxplots}
+	Use \code{seaborn} to create a boxplot of one numeric feature, having a separate box for each \code{species}.
+	Repeat this procedure to have such a plot for each feature.
+	Try changing the plot title, the axis titles, and the color scheme.
+	\item
+	\taskname{$\chi^2$ Test}
+	Conduct $\chi^2$ tests to examine the relationship between each of the numeric features and the target \code{species}.
+	You may use \code{chi2\_contingency()} from \code{scipy.stats} for the tests.
+	As preparation, you may use \code{crosstab()} from \code{pandas} to create contingency tables and \code{cut()} from \code{pandas} to discretize features.
+	\newline
+	How do you interpret the results?
+	What is the relationship between the results of the statistical tests and the plots from the previous sub-task?
+\end{enumerate}
+
+\end{document}
