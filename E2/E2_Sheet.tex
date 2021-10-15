@@ -42,11 +42,12 @@ The type of flower, i.e., the species, is our target variable.
 	\newline
 	What are disadvantages of such an approach?
 	\item
-	\taskname{Diagnosis}
+	\taskname{Inspection}
 	Create a visual representation of your decision tree with \code{plot\_tree()} from \code{sklearn.tree}.
-	Also, have a look at the attributes of the tree object.
+	Also, have a look at the properties you can retrieve from the tree object.
 	\newline
-	Does the structure (e.g., the splits) of the tree make sense, given the plots we created for the first exercise sheet?
+	Does the structure (e.g., the splits) of the tree make sense, given the plots we created and the statistical tests we conducted for the first exercise sheet?
+	Which features were the most important ones during training?
 	\item
 	\taskname{Evaluation}
 	Apply k-fold cross-validation to evaluate your model properly.
@@ -68,6 +69,7 @@ The type of flower, i.e., the species, is our target variable.
 	You may, for example, vary the maximum depth of the tree.
 	\newline
 	How does varying this hyperparameter affect the resulting train and test accuracy?
+	Which value of the hyperparameter would you recommend?
 \end{enumerate}
 
 \end{document}
