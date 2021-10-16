@@ -31,25 +31,27 @@ Besides that, we will work with \code{matplotlib} and \code{pandas}.
 \section*{Task: Association Rules}
 
 The aim of this exercise is to apply different variants of frequent itemset mining and association rule mining.
-We work with the \code{Groceries} dataset, which you can obtain by running the script \code{procure\_groceries\_dataset.py} provided on ILIAS.
+We work with the \code{Groceries} dataset, which you can obtain by running the script \code{prepare\_groceries\_dataset.py} provided on ILIAS.
 The \href{https://rdrr.io/cran/arules/man/Groceries.html}{dataset} contains real-world transaction data from a grocery outlet.
 
 \begin{enumerate}[label=\alph*), left=0pt, itemsep=12pt]
 	\item
 	\taskname{Transaction Data}
-	Load the dataset.
-	You may use \code{reader()} from the standard package \code{csv}.
+	Load the dataset and bring it into a form suitable for analysis.
+	Python's built-in \code{open()} routine in combination with some simple string operations should suffice.
 	\newline
 	How is the dataset structured?
-	How many different items are there in the dataset?
-	How is the frequency of the items distributed?
+	How many different items are there?
+	How is the length of transactions distributed?
+	How is the frequency of items distributed?
 	\item
 	\taskname{Frequent Itemset Mining}
 	Use \code{apriori()} from \code{mlxtend.frequent\_patterns} to determine all frequent itemsets with a support of at least 5\%.
-	\code{apriori()} requires the transaction data to be in a \code{pandas.DataFrame}.
-	You can use a \code{TransactionEncoder} from \code{mlxtend.preprocessing} to perform this conversion.
+	\code{apriori()} requires the transaction data to be in a specifically encoded \code{pandas.DataFrame}.
+	You can use a \code{TransactionEncoder} from \code{mlxtend.preprocessing} for that purpose.
 	\newline
-	Are all of these frequent itemsets also maximally frequent?
+	Are all of the frequent itemsets also maximally frequent?
+	Why / why not?
 	\item
 	\taskname{Association Rules Mining}
 	Use functions \code{apriori()} and \code{association\_rules()} from \code{mlxtend.frequent\_patterns} to determine all association rules with a support of at least 1\% and a minimum confidence of 40\%.
@@ -67,10 +69,11 @@ The \href{https://rdrr.io/cran/arules/man/Groceries.html}{dataset} contains real
 	\item
 	\taskname{Level-Crossing Mining}
 	Create a level-crossing representation of the groceries dataset, including the original \code{label} values besides their respective \code{level2} values.
-	This means there should be two `items' for each actual item now, unless \code{label} and \code{level2} are identical.
+	This means there should be two `items' for each actual item now.
+	Make sure this also is the case if there are naming clashes between the two levels.
 	Extract association rules with the previous subtask's thresholds.
 	\newline
-	What do you notice?
+	Which challenges do you encounter due to the level-crossing representation?
 \end{enumerate}
 
 \end{document}
