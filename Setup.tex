@@ -38,24 +38,25 @@ This document should help to prepare your computer and yourself for the programm
 We use \code{Python} as programming language, as it is the most popular programming language for data science.
 In particular, we use the packages \code{pandas} for data handling and \code{scikit-learn} for ML algorithms.
 In theory, you can also solve the tasks in another programming language (e.g., R, which we used for the exercises in previous years).
-However, the published solutions are in Python and hints in the tasks target at that language as well.
+However, the published solutions are in Python and hints in the tasks (on packages/functions) target at that language as well.
 
 \section{Installing Python}
 
 You can obtain Python from its \href{https://www.python.org/downloads/}{website}.
 The solutions to the exercises use Python 3.8.
-However, as we stick to Python's basics rather than using fancy, highly specific features, you should be fine with slightly older and newer versions as well.
+However, as we stick to Python's basics, you should be fine with slightly older and newer versions as well.
 (But please don't use versions of Python 2.)
 
-Instead of obtaining a bare Python installation, you can also install the Python distributions \href{https://www.anaconda.com/products/individual}{Anaconda} or \href{https://docs.conda.io/en/latest/miniconda.html}{Miniconda}.
-Besides providing Python, both allow to easily setup environments with specific Python versions, as we'll discuss in Section~\ref{sec:environment}.
+Instead of obtaining a bare Python installation, you can also install one of the Python distributions \href{https://www.anaconda.com/products/individual}{Anaconda} or \href{https://docs.conda.io/en/latest/miniconda.html}{Miniconda}.
+Besides providing Python, both allow to easily setup environments with specific Python versions, as we discuss in Section~\ref{sec:environment}.
 While \code{Miniconda} uses less disk space and already is sufficient for the exercises, Anaconda comes with lots of pre-installed Python packages, a pre-installed IDE (\code{Spyder}) and a (IMHO not really user-friendly) GUI for package management.
 
 \section{Installing an IDE}
 
-The published solutions will all use \code{Jupyter Notebooks}, which allow to mix source code and explanatory text in Markdown format.
+The published solutions will all use \code{Jupyter Notebooks}, which allow to mix code snippets with explanatory text in Markdown format.
 Such notebooks are very popular in data science, as they allow explaining your analyses and communicating results easily.
 Using \code{Jupyter Notebooks}, you don't need another IDE for the exercises.
+You can view, edit, and run notebooks in a web browser.
 See Section~\ref{sec:notebooks} for installation instructions.
 
 If you still want to write classical source-code files and benefit from features like automatic style and error checking etc., you should obtain a proper IDE.
@@ -66,7 +67,7 @@ One simple option is \code{Spyder}, which comes with \code{Anaconda}, but you ca
 In the exercises, we use Python to solve concrete data-science tasks.
 The goal is not to systematically learn Python as a language.
 Most of the code focuses on using particular data-science libraries anyway instead of writing large programs from scratch.
-For example, though we'll implicitly use objects, you don't need to write classes, overwrite methods etc.
+For example, though we'll implicitly use object orientation, you don't need to write classes, overwrite methods etc.
 Some of the relevant syntactical elements are:
 
 \begin{itemize}[left=0pt, noitemsep]
@@ -80,7 +81,7 @@ Some of the relevant syntactical elements are:
 You can find a short intro into various language elements of Python in the \href{https://www.w3schools.com/python/default.asp}{W3Schools tutorial}.
 Also, Chapters 1-5 of the \href{https://docs.python.org/3.8/tutorial/index.html}{official tutorial} might help you to get familiar with the basics.
 The \href{https://docs.python.org/3.8/}{official documentation} might be helpful if you need a deep dive into certain aspects.
-Generally, we advise to not spend too much time grasping details of Python beforehand, but rather learning things on the fly.
+Generally, we advise to not spend too much time grasping details of Python beforehand, but rather to learn things on the fly.
 
 \section{Preparing a Virtual Environment}
 \label{sec:environment}
@@ -91,14 +92,14 @@ If you don't need to store other versions of the exercise's packages in parallel
 
 \subsection{Alternative 1: \code{virtualenv} Environment}
 
-If you only have a bare Python without \code{conda}, we recommend using the package \code{virtualenv} to set-up a dedicated environment.
+If you only have a bare Python without \code{conda}, we recommend using \code{virtualenv} to set up a dedicated environment.
 First, install \code{virtualenv} with
 %
 \begin{lstlisting}[style=cmdblock]
 python -m pip install virtualenv
 \end{lstlisting}
 %
-To set up an environment at a certain destination, run
+To set up an environment at a certain destination on your hard drive, run
 %
 \begin{lstlisting}[style=cmdblock]
 python -m virtualenv -p <path/to/python/executable> <path/to/env/dest>
@@ -116,7 +117,7 @@ Activate the environment in Windows (note the back-slashes) with
 <path\to\env\destination>\Scripts\activate
 \end{lstlisting}
 %
-Now you can install packages from the \href{https://pypi.org/}{Python Package Index} like
+After activation, you can simply install packages from the \href{https://pypi.org/}{Python Package Index} into the environment like
 %
 \begin{lstlisting}[style=cmdblock]
 python -m pip install pandas
@@ -148,36 +149,36 @@ If packages are not listed in \code{Anaconda}'s package repo, you can also insta
 To leave the environment, run
 %
 \begin{lstlisting}[style=cmdblock]
-deactivate
+conda deactivate
 \end{lstlisting}
 
 \section{Installing a List of Packages}
 
-As part of the solution to each exercise, we'll provide a file \code{requirements.txt}, listing all required packages and their versions.
+We provide a file \code{requirements.txt} on ILIAS, listing all required packages (and their versions) for the exercises.
 To install all these dependencies at once, simply activate your environment and run
 %
 \begin{lstlisting}[style=cmdblock]
 python -m pip install -r requirements.txt
 \end{lstlisting}
 %
-If you make changes to the environment and you want to persist them to the file, run
+If you make changes to the environment (e.g., add packages, update packages) and you want to persist these changes to the requirements file, run
 %
 \begin{lstlisting}[style=cmdblock]
 python -m pip freeze > requirements.txt
 \end{lstlisting}
 %
-We also created the requirements file this way.
+We also created the original requirements file this way.
 
 \section{Using Notebooks}
 \label{sec:notebooks}
 
-To run or create notebooks from the environment, you need to install the package \code{notebook} into the environment (after activating it!), e.g., with
+To run or create \code{Jupyter Notebooks} from the environment, you need to install the package \code{notebook} into the environment (after activating it!), e.g., with
 %
 \begin{lstlisting}[style=cmdblock]
 python -m pip install notebook
 \end{lstlisting}
 %
-If you use \code{Anaconda}, you can also directly launch the version of \code{notebook} shipped with it.
+If you have \code{Anaconda}, you can also directly use the version of \code{notebook} shipped with it.
 Next, you need to install a kernel for the environment:
 %
 \begin{lstlisting}[style=cmdblock]
@@ -185,13 +186,15 @@ ipython kernel install --user --name=ds-2021-kernel
 \end{lstlisting}
 %
 The kernel allows using your environment in notebooks.
-Thus, you should see (and be able to select) the kernel in the menu when opening a notebook.
+Thus, you should see (and be able to select) the kernel in the menu after opening a notebook.
 Start \code{Jupyter Notebook} with
 %
 \begin{lstlisting}[style=cmdblock]
 jupyter notebook
 \end{lstlisting}
 %
-To get an introduction into the functionality of \code{Jupyter Notebooks}, you can have a look at the \href{https://jupyter-notebook.readthedocs.io/en/stable/notebook.html#}{official documentation} or \href{https://realpython.com/jupyter-notebook-introduction/}{this tutorial}.
+Note that you only get access to files in the directory from which you started \code{Jupyter Notebooks} or in sub-directories.
+\newline
+For an introduction into the functionality of \code{Jupyter Notebooks}, you can have a look at the \href{https://jupyter-notebook.readthedocs.io/en/stable/notebook.html#}{official documentation} or \href{https://realpython.com/jupyter-notebook-introduction/}{this tutorial}.
 
 \end{document}
