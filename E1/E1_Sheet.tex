@@ -27,27 +27,28 @@
 
 For this exercise, you should install the packages \code{matplotlib}, \code{pandas}, \code{scikit-learn}, \code{scipy}, and \code{seaborn}.
 If you don't want to install them individually, you may also use the file \code{requirements.txt} from ILIAS.
-See \code{Setup.pdf} for more information.
+See \code{DS1\_Python\_Setup.pdf} for more information.
 
-All these packages have detailed documentation as well as tons of Stack Overflow questions, which both might help to solve the following tasks.
+All these packages have detailed documentation as well as countless Stack Overflow questions, which both might help to solve the following tasks.
 
 \section*{Task: Statistics and Plots}
 
 The aim of this exercise is to compute descriptive statistics and create different types of plots.
-We use the world-renowned \code{iris} dataset, which even has \href{https://en.wikipedia.org/wiki/Iris_flower_data_set}{a Wikipedia entry}.
+We use the world-renowned \code{iris} dataset, which was not only featured in the lecture, but even has \href{https://en.wikipedia.org/wiki/Iris_flower_data_set}{its own Wikipedia entry}.
 
 \begin{enumerate}[label=\alph*), left=0pt, itemsep=12pt]
 	\item
 	\taskname{Loading}
 	Obtain the dataset with the function \code{load\_iris()} from the package \code{sklearn.datasets}.
-	Combine the values of the attributes \code{data} and \code{target} from the loaded object into one \code{pandas.DataFrame}.
+	Combine the values of the properties \code{data}, \code{feature\_names}, \code{target}, and \code{target\_names} from the loaded object into one \code{pandas.DataFrame}.
 	Name the target column \code{species}.
-	View the final result.
+	View the resulting \code{DataFrame}.
 	\item
 	\taskname{Descriptive Statistics}
-	Compute descriptive statistics like mean, standard deviation etc. for the numeric features in the dataset.
+	Compute descriptive statistics like mean, standard deviation etc. for the numeric features of the dataset.
 	You may call methods to compute individual statistics like \code{mean()} as well as a summary with \code{describe()}, both applicable to the whole \code{DataFrame} as well as single columns.
-	Additionally, count how often each \code{species} occurs.
+	\newline
+	To summarize the target variable, count how often each \code{species} occurs.
 	\item
 	\taskname{Distribution Plots}
 	Choose at least one of the features and create a histogram as well as a boxplot with the package \code{matplotlib.pyplot}, \code{seaborn}, or using the \code{plot()} method of \code{DataFrame}.
