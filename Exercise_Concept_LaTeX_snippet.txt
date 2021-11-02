@@ -1,0 +1,45 @@
+\begin{frame}{Exercises (I)}
+\begin{itemize}
+	\item Responsible: \href{https://dbis.ipd.kit.edu/2562.php}{Jakob Bach}
+	\item Goals:
+	\begin{itemize}
+		\item Deepen understanding of the contents from the lecture
+		\item Prepare for exam
+		\item Acquire practical data-science skills (programming, analysis of results)
+	\end{itemize}
+	\item Four topics:
+	\begin{itemize}
+		\item Fundamentals
+		\item Classification
+		\item Association rules
+		\item Clustering and outlier detection
+	\end{itemize}
+	\item Three components: exercise sessions, online tests, programming exercises $\rightarrow$ see following slide
+	\item Exercises are not graded (i.e., not mandatory for exam)
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Exercises (II)}
+\begin{itemize}
+	\item Exercise sessions
+	\begin{itemize}
+		\item Four Mondays (15.11., 13.12., 10.01., 07.02), 10:00-11:30
+		\item In person, not streamed/recorded (but written summary)
+		\item We discuss theory-related questions, prepared and answered by you
+	\end{itemize}
+	\item Online tests on ILIAS
+	\begin{itemize}
+		\item Published once lecture has progressed far enough
+		\item Solve them whenever you like and as often as you like
+		\item 10-15 questions
+		\item Automatic evaluation, explanations for solutions
+	\end{itemize}
+	\item Programming exercises (exercise sheets)
+	\begin{itemize}
+		\item Published once lecture has progressed far enough
+		\item Solution videos and notebooks published one week before corresponding exercise session (so you can ask questions then)
+		\item Feel free to solve them in pairs or even larger teams
+		\item Use Python, in particular \texttt{pandas} and \texttt{sklearn}
+	\end{itemize}
+\end{itemize}
+\end{frame}
