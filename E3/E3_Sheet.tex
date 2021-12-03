@@ -26,18 +26,20 @@
 \section*{Setup}
 
 Compared to the previous exercise sheets, you should install \code{mlxtend}, \code{pyreadr}, and \code{rdata}.
-Besides that, we will work with \code{matplotlib} and \code{pandas}.
+If you have used the \code{requirements.txt} from ILIAS to set up your environment, you already have these dependencies available.
+We will also work with \code{matplotlib} and \code{pandas} again.
 
 \section*{Task: Association Rules}
 
-The aim of this exercise is to apply different variants of frequent itemset mining and association rule mining.
-We work with the \code{Groceries} dataset, which you can obtain by running the script \code{prepare\_groceries\_dataset.py} provided on ILIAS.
-The \href{https://rdrr.io/cran/arules/man/Groceries.html}{dataset} contains real-world transaction data from a grocery outlet.
+The aim of this exercise is to apply different approaches for frequent itemset mining and association rule mining.
+We work with the \code{Groceries} dataset, which contains \href{https://rdrr.io/cran/arules/man/Groceries.html}{real-world transaction data} from a grocery outlet.
+You can download the dataset to your current directory with the script \code{prepare\_groceries\_dataset.py} provided on ILIAS.
+Just run \code{python prepare\_groceries\_dataset.py} after you have activated the environment for the exercises.
 
 \begin{enumerate}[label=\alph*), left=0pt, itemsep=12pt]
 	\item
 	\taskname{Transaction Data}
-	Load the dataset and bring it into a form suitable for analysis.
+	Load the dataset and bring it into a suitable form, e.g., a list of transactions, which are lists of items.
 	Python's built-in \code{open()} routine in combination with some simple string operations should suffice.
 	\newline
 	How is the dataset structured?
@@ -46,30 +48,30 @@ The \href{https://rdrr.io/cran/arules/man/Groceries.html}{dataset} contains real
 	How is the frequency of items distributed?
 	\item
 	\taskname{Frequent Itemset Mining}
-	Use \code{apriori()} from \code{mlxtend.frequent\_patterns} to determine all frequent itemsets with a support of at least 5\%.
-	\code{apriori()} requires the transaction data to be in a specifically encoded \code{pandas.DataFrame}.
+	Use \code{apriori()} from \code{mlxtend.frequent\_patterns} to determine all frequent itemsets with a minimum support of 5\%.
+	\code{apriori()} requires the transaction data to be in a specially encoded \code{pandas.DataFrame}.
 	You can use a \code{TransactionEncoder} from \code{mlxtend.preprocessing} for that purpose.
 	\newline
-	Are all of the frequent itemsets also maximally frequent?
-	Why / why not?
+	Are all of the frequent itemsets also maximal frequent?
+	Why or why not?
 	\item
 	\taskname{Association Rules Mining}
-	Use functions \code{apriori()} and \code{association\_rules()} from \code{mlxtend.frequent\_patterns} to determine all association rules with a support of at least 1\% and a minimum confidence of 40\%.
+	Use functions \code{apriori()} and \code{association\_rules()} from \code{mlxtend.frequent\_patterns} to determine all association rules with a minimum support of 1\% and a minimum confidence of 40\%.
 	\newline
 	Which five rules have the highest confidence?
 	Which rules contain \textit{yogurt} (as one of the items) on the left-hand side and have a confidence greater than 50\%?
 	\item
 	\taskname{Multi-Level Mining}
-	Use the mapping contained in \code{groceries\_structure.csv} to aggregate the grocery data to \code{level2}.
-	In other words, replace all \code{label} values in the initial groceries dataset with their corresponding \code{level2} value.
+	Use the mapping contained in \code{groceries\_structure.csv} to aggregate the dataset to \code{level2}.
+	In other words, the items in the original dataset have values from column \code{label}, which you should replace with their corresponding \code{level2} values now.
 	Make sure to avoid duplicate items in each transaction.
 	Extract all rules with a minimum support of 10\% and a minimum confidence of 40\%.
 	\newline
 	Why is it reasonable to use a higher support threshold than in the previous subtasks?
 	\item
 	\taskname{Level-Crossing Mining}
-	Create a level-crossing representation of the groceries dataset, including the original \code{label} values besides their respective \code{level2} values.
-	This means there should be two `items' for each actual item now.
+	Create a level-crossing representation of the dataset, including the original \code{label} values besides their respective \code{level2} values.
+	This means each transaction should contain two `items' for each actual item now.
 	Make sure this also is the case if there are naming clashes between the two levels.
 	Extract association rules with the previous subtask's thresholds.
 	\newline

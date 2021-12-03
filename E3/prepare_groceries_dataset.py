@@ -14,7 +14,7 @@ import rdata
 
 
 GROCERIES_URL = 'https://github.com/mhahsler/arules/raw/master/data/Groceries.rda'
-GROCERIES_DIR = './'
+GROCERIES_DIR = './'  # output directory
 GROCERIES_FILENAME = 'groceries.csv'
 GROCERIES_STRUCTURE_FILENAME = 'groceries_structure.csv'
 
