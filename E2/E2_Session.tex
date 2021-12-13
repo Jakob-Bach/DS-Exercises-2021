@@ -1,0 +1,343 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{enumitem} % enumerations
+\usepackage{fancyhdr} % header
+\usepackage[a4paper, margin=2.5cm]{geometry} % customize page
+\usepackage[colorlinks=true]{hyperref} % links
+\usepackage{tcolorbox} % layout for questions
+\usepackage{xcolor} % colors
+
+% header
+\pagestyle{fancy}
+\fancyhead[L]{\textbf{Exercise Session 2: Indexes and Classification}}
+\fancyhead[R]{Data Science 1 -- Winter 21/22}
+
+% colors and commands
+\definecolor{kitgreen}{HTML}{00876C}
+\definecolor{kitblue}{HTML}{4664AA}
+\definecolor{kitlightgreen}{HTML}{CCE7E2} % lighter version of KIT green, not an official KIT color, created with help of https://www.tutorialrepublic.com/html-reference/html-color-picker.php
+
+\hypersetup{allcolors=kitblue}
+
+\newcommand{\code}[1]{\textcolor{kitgreen}{\texttt{#1}}}
+
+\newtcolorbox{question}{
+	colback=kitlightgreen,
+	sharp corners, % if rounded, can use "arc" to determine curvature
+	boxrule=0pt, % no frame ...
+	leftrule=5pt, % ... but on the left
+	colframe=kitgreen,
+	boxsep=0pt, % padding added on all sides
+	left=5pt,
+	right=5pt,
+	top=5pt,
+	bottom=5pt
+}
+
+\begin{document}
+
+\section*{General Q\&A}
+
+\subsection*{Organization}
+
+\begin{question}
+	Are the programming exercises relevant for the exam?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item according to lecture \code{Introduction} (slide 9), ``[e]verything in this lecture and the exercises'' relevant for exam
+	\item please ask Edouard for further clarifications (he is responsible for the exam)
+\end{itemize}
+
+\begin{question}
+	Do we have to learn algorithms like ID3 (tree construction) by heart, or is it enough to understand the principles behind it?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item please ask Edouard (he is responsible for the exam)
+\end{itemize}
+
+\begin{question}
+	Will you publish a solution for this session?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item Yes, you are currently reading it.
+\end{itemize}
+
+\begin{question}
+	Will be third exercise session be online as well?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item if your preferences regarding online/offline haven't changed: yes, will be online again
+	\item I will inform you about the format in the forum post / e-mail announcing the session
+\end{itemize}
+
+\subsection*{Content of the Lecture}
+
+\begin{question}
+	Does k-fold cross-validation use the same test set each iteration?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item training set and test set both are formed from folds, i.e., partitions, of the full data
+	\item each of the $k$ folds is used for testing in one iteration
+	\item each of the $k$ folds is used for training in $k-1$ iterations
+	\item i.e., the test sets don't overlap, while the training sets do overlap (unless $k=2$)
+\end{itemize}
+
+\begin{question}
+	How are the folds created in k-fold cross-validation?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item random partitioning of original data, i.e., each data object assigned to exactly one fold
+	\item instead of purely random assignment to partitions, might use stratification
+\end{itemize}
+
+\newpage
+
+\section*{Theory Tasks}
+
+\subsection*{Chapter 3: Indexes}
+
+\begin{question}
+	How does the R tree search for the right rectangle to answer a query?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item inspect all rectangles that might contain the (point, range etc.) query
+	\item even for point queries, these might be multiple rectangles, due to overlap in tree
+	\item in contrast, $k$-d tree partitions data (only area of one leaf node can contain a point)
+\end{itemize}
+
+\begin{question}
+	How does the R tree handle insertion of new points?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item preferably, insert into a rectangle whose area contains the point
+	\item if there is no such rectangle, choose rectangle that needs least enlargement
+	\item if node is full (pre-defined capacity reached), split it up
+\end{itemize}
+
+\begin{question}
+	What kind of index is most useful for a highly imbalanced dataset?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item imbalance (uneven distribution) of target variable not relevant for indexes
+	\begin{itemize}[left=0pt, nosep]
+		\item index uses feature values, not target variable
+	\end{itemize}
+	\item imbalance of feature values shouldn't be a problem as well
+	\begin{itemize}[left=0pt, nosep]
+		\item index does not need to partition range of features evenly, but can adapt to distribution
+	\end{itemize}
+	\item feature imbalance is problem for equal-width histograms
+	\begin{itemize}[left=0pt, nosep]
+		\item e.g., a few bins might contain many values, many bins might be empty
+		\item but that has nothing to do with indexes we discussed in lecture \dots
+	\end{itemize}
+\end{itemize}
+
+\begin{question}
+	Which query types can be handled by spatial indexes?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item in general: queries on multi-dimensional data
+	\item match queries (points)
+	\item range queries (rectangles); potentially also more complex shapes
+	\item $k$-NN queries
+	\item ranking queries
+\end{itemize}
+
+\subsection*{Chapter 4: Classification}
+
+\begin{question}
+	How can we determine the optimal $k$ for a $k$-NN classifier?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item split data into training and validation set (e.g., holdout split or cross-validation)
+	\item try out different values of $k$
+	\item train models on training set only, pick $k$ based on validation-set performance
+	\item typically, one tries small values of $k$ only, e.g., 1 to 10
+\end{itemize}
+
+\begin{question}
+	You are using a $k$-NN classifier on a dataset with two features (and an additional target variable).
+	The first feature has the range $[0,1]$ and the second feature has the range $[-10000,10000]$.
+	Why is this problematic?
+	What can be done to reduce this effect?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item problematic because second feature will have more impact on distance computations
+	\begin{itemize}[left=0pt, nosep]
+		\item due to its larger range (which probably causes larger variance)
+		\item distance computations are essential for $k$-NN (define the neighborhood)
+	\end{itemize}
+	\item solution: normalization, e.g., min-max scaling
+\end{itemize}
+
+\begin{question}
+	How can we deal with the problem of correlated predictors in linear classifiers?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item apply PCA
+	\begin{itemize}[left=0pt, nosep]
+		\item features after transformation are always uncorrelated (a property of PCA)
+		\item doing regression after PCA also known as `principal component regression'
+	\end{itemize}
+	\item remove correlated predictors manually, e.g.,
+	\begin{itemize}[left=0pt, nosep]
+		\item loop over pairs of predictors
+		\item remove one predictor if correlation in pair over some threshold
+	\end{itemize}
+\end{itemize}
+
+\begin{question}
+	Explain different ways to avoid overfitting in decision-tree learning!
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item pre-pruning: grow smaller decision tree, e.g., by setting
+	\begin{itemize}[left=0pt, nosep]
+		\item minimum support: minimum number of data objects in a leaf
+		\item minimum confidence: minimum fraction of the majority class in a leaf
+		\item require maximum tree depth
+		\item further options might be available, e.g., check \href{https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html}{sklearn.tree.DecisionTreeClassifier}
+	\end{itemize}
+	\item post-pruning: cut down decision tree after growing it
+	\item for both approaches: use validation set to decide how far to prune
+\end{itemize}
+
+\begin{question}
+	How can we consider costs of classification errors in decision-tree learning?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item generic solution: re-sample / duplicate data objects according to their class
+	\begin{itemize}[left=0pt, nosep]
+		\item library (like \code{sklearn}) might allow passing instance weights or class weights instead
+	\end{itemize}
+	\item modify objective function, e.g., consider conditional risk
+	\begin{itemize}[left=0pt, nosep]
+		\item for trees, might combine that with impurity criterion (like info gain or Gini index)
+	\end{itemize}
+\end{itemize}
+
+\begin{question}
+	What is the prior in Bayesian classification?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item given feature values $X$ and class $C$, Bayes' theorem is $P(C|X) = \frac{P(X|C) \cdot P(C)}{P(X)}$
+	\item prior probability of feature values, $P(X)$, not interesting for us
+	\begin{itemize}[left=0pt, nosep]
+		\item normalized out when comparing $P(C|X)$ for different classes
+	\end{itemize}
+	\item prior probability of classes, $P(C)$, is interesting for us, used in classifier
+	\begin{itemize}[left=0pt, nosep]
+		\item it's just the frequency of classes in data
+		\item one can also build simple baseline from it (always guess $P(C)$, ignore feature values)
+	\end{itemize}
+\end{itemize}
+
+\begin{question}
+	How can we combine different classifiers?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item bagging
+	\item boosting
+	\item stacking
+	\item all these three approaches are summarized under term `ensembling'
+\end{itemize}
+
+\begin{question}
+	How does boosting reduce bias and variance?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item reduce variance: train multiple models
+	\item reduce bias: iterative training -- data objects re-weighted after each training
+	\begin{itemize}[left=0pt, nosep]
+		\item misclassified objects get higher weight
+		\item thus, following classifiers guided towards improving the errors of previous classifiers
+	\end{itemize}
+\end{itemize}
+
+\newpage
+
+\subsection*{Chapter 5: Evaluation}
+
+\begin{question}
+	What is stratification?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item approach for data splitting / property of splits
+	\item each split should be representative of full data (have same distribution)
+	\item typically, we only stratify for target variable (not for features) in cross-validation
+	\item one Python implementation: \href{https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedKFold.html}{sklearn.model\_selection.StratifiedKFold}
+\end{itemize}
+
+\begin{question}
+	How can one describe the classification error in terms of bias and variance?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item mean-squared error (MSE) \href{https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff}{can be decomposed} into bias and variance
+	\item bias: difference between estimate of target value and actual target value
+	\begin{itemize}[left=0pt, nosep]
+		\item can be observed as error on training data (model not powerful enough to fit data)
+	\end{itemize}
+	\item variance: variance of estimate of target value
+	\begin{itemize}[left=0pt, nosep]
+		\item can be observed as difference between training and validation/test error (overfitting)
+	\end{itemize}
+	\item there usually is trade-off between bias and variance (decreasing one increases other)
+\end{itemize}
+
+\begin{question}
+	Explain the $F_{\beta}$ score and what it measures!
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item classification performance measure
+	\item range: $[0,1]$ (higher is better)
+	\item formula: $F_{\beta} = \frac{(1 + \beta^2) \cdot precision \cdot recall}{\beta^2 \cdot precision + recall}$
+	\item harmonic mean of precision (weight: $\frac{1}{1 + \beta^2}$) and recall (weight: $\frac{\beta^2}{1 + \beta^2}$)
+	\item precision: how accurate are we if we predict `positive'?
+	\item recall: how accurate are our predictions for the actually `positive' objects?
+\end{itemize}
+
+\begin{question}
+	Explain Cohen's kappa coefficient!
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item in our context: compares one classifier to a reference classifier
+	\item $\kappa = \frac{p_c - p_r}{1 - p_r}$, with $p$ = performance (higher is better), $c$ = our classifier, $r$ = reference
+	\item reference often is a simple baseline like random guessing
+	\item $\kappa=1 \rightarrow$ always right, $\kappa=0 \rightarrow$ as good as reference, $\kappa=-1 \rightarrow$ always wrong
+\end{itemize}
+
+\begin{question}
+	What advantage do you see in the informational loss compared to the quadratic loss?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item informational loss: $-\log_2 p_c$, with $c$ being the actual class
+	\item estimating a probability of nearly zero for actual class gets huge penalty
+	\item in particular, loss can become arbitrarily high, while quadratic loss is bounded
+	\item which loss measure is better depends on your use case
+\end{itemize}
+
+\end{document}
