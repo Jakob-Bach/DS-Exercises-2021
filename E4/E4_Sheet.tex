@@ -26,7 +26,8 @@
 \section*{Setup}
 
 Compared to the previous exercise sheets, you should install \code{pydataset}.
-Besides that, we will work with \code{matplotlib}, \code{numpy}, \code{pandas}, \code{scikit-learn}, and \code{seaborn}.
+If you have used the \code{requirements.txt} from ILIAS to set up your environment, you already have this dependency available.
+We will also work with \code{matplotlib}, \code{numpy}, \code{pandas}, \code{scikit-learn}, and \code{seaborn} again.
 
 \section*{Task: Clustering and Outlier Detection}
 
@@ -57,24 +58,24 @@ The \href{https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics
 	Train an instance of \code{DBSCAN} from \code{sklearn.cluster} and visualize the result as before.
 	\newline
 	Why do you obtain such a result?
-	Are you able to improve the result with hyperparameter tuning based on the silhouette coefficient?
+	Can you leverage the silhouette coefficient to search for hyperparameter values that yield a better clustering result?
 	\item
 	\taskname{OPTICS}
-	Train an instance of \code{OPTICS} from \code{sklearn.cluster} and create a reachability plot based on the attributes of the trained instance.
+	Train an instance of \code{OPTICS} from \code{sklearn.cluster} and create a reachability plot based on properties of the trained instance.
 	\newline
 	Can you use this plot to determine a good value for DBSCAN's hyperparameter $\epsilon$?
 	\item
 	\taskname{Outlier Detection}
-	Detect outliers in the data with the help of \code{NearestNeighbors} from \code{sklearn.neighbors}, a distance-based approach, and \code{LocalOutlierScore} from \code{sklearn.neighbors}, a density-based approach.
+	Detect outliers in the data with the help of \code{NearestNeighbors} from \code{sklearn.neighbors}, a distance-based approach, and \code{LocalOutlierFactor} from \code{sklearn.neighbors}, a density-based approach.
 	Visualize the data points together with their outlier scores, e.g., by scaling the size and/or color of the points in a scatter plot accordingly.
 	\newline
-	For which data points do the results of the two approaches differ strongly and why?
+	For which data points do the results of the two approaches differ strongly, and why?
 	\item
 	\taskname{Subspace Outliers}
 	Calculate the outlier scores for each feature of the dataset separately.
 	Compare these results to your previous two-dimensional approach.
 	\newline
-	Are there points which only appear to be outliers in one subspace?
+	Are there points that only appear to be outliers in one subspace?
 	Are there non-trivial outliers in the data?
 \end{enumerate}
 
