@@ -1,0 +1,286 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{enumitem} % enumerations
+\usepackage{fancyhdr} % header
+\usepackage[a4paper, margin=2.5cm]{geometry} % customize page
+\usepackage[colorlinks=true]{hyperref} % links
+\usepackage{tcolorbox} % layout for questions
+\usepackage{xcolor} % colors
+
+% header
+\pagestyle{fancy}
+\fancyhead[L]{\textbf{Exercise Session 4: Clustering and Outlier Detection}}
+\fancyhead[R]{DS 1 -- Winter 21/22}
+
+% colors and commands
+\definecolor{kitgreen}{HTML}{00876C}
+\definecolor{kitblue}{HTML}{4664AA}
+\definecolor{kitlightgreen}{HTML}{CCE7E2} % lighter version of KIT green, not an official KIT color, created with help of https://www.tutorialrepublic.com/html-reference/html-color-picker.php
+
+\hypersetup{allcolors=kitblue}
+
+\newcommand{\code}[1]{\textcolor{kitgreen}{\texttt{#1}}}
+
+\newtcolorbox{question}{
+	colback=kitlightgreen,
+	sharp corners, % if rounded, can use "arc" to determine curvature
+	boxrule=0pt, % no frame ...
+	leftrule=5pt, % ... but on the left
+	colframe=kitgreen,
+	boxsep=0pt, % padding added on all sides
+	left=5pt,
+	right=5pt,
+	top=5pt,
+	bottom=5pt
+}
+
+\begin{document}
+
+\section*{General Q\&A}
+
+No questions.
+
+\section*{Theory Tasks}
+
+\subsection*{Chapter 2: Fundamentals}
+
+\begin{question}
+	For data aggregation, is there a relationship between distributive/algebraic/holistic aggregates and self-maintainable aggregates?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item self-maintainability is a property regarding change operations (like insertion) of data
+	\begin{itemize}[left=0pt, nosep]
+		\item basic definition: update aggregate after change only from change and previous value
+		\item aggregate might be self-maintainable regarding some operations, but not others
+	\end{itemize}
+	\item distributive aggregates:
+	\begin{itemize}[left=0pt, nosep]
+		\item can be computed from aggregates of same type determined on data partitions
+		\item thus, self-maintainable regarding insertion
+		\begin{itemize}[left=0pt, nosep]
+			\item compute aggregate on set of new point(s)
+			\item combine with value of aggregate on existing points
+			\item e.g., min, max, count, and sum can be updated with new point(s)
+		\end{itemize}
+		\item sum / count also self-maintainable regarding deletion
+		\begin{itemize}[left=0pt, nosep]
+			\item subtract values of deleted points / subtract number of deleted points
+		\end{itemize}
+		\item min / max not self-maintainable regarding deletion
+		\begin{itemize}[left=0pt, nosep]
+			\item no problem if deleted value higher than min / lower than max $\rightarrow$ aggregate same
+			\item problem if deleted value equal to min / max $\rightarrow$ new value of aggregate unclear
+		\end{itemize}
+	\end{itemize}
+	\item algebraic aggregates:
+	\begin{itemize}[left=0pt, nosep]
+		\item can be computed from set of distributive aggregates
+		\item self-maintainability in narrow sense violated (need multiple sub-aggregates)
+		\item self-maintainable in broad sense (if access to all necessary sub-aggregates)
+		\item e.g., if sum and number of points stored, can still compute mean after insert/delete
+	\end{itemize}
+	\item holistic aggregates:
+	\begin{itemize}[left=0pt, nosep]
+		\item cannot be computed from fixed amount of sub-aggregates (e.g., median, mode)
+		\item thus, not self-maintainable regarding insertion/deletion
+	\end{itemize}
+\end{itemize}
+
+\subsection*{Chapter 7: Clustering}
+
+\begin{question}
+	What are `convex space partitions' in the context of $k$-Means?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item all clustering algorithms typically partition space (at least implicitly)
+	\begin{itemize}[left=0pt, nosep]
+		\item for each point, you can decide to which cluster it belongs
+		\item for `soft' clustering methods like mixture models, membership is probabilistic
+		\item for $k$-Means, points are assigned to closest centroid
+		\item partitioning can be visualized as \href{https://en.wikipedia.org/wiki/Voronoi_diagram}{Voronoi diagram}
+	\end{itemize}
+	\item partitions in $k$-Means are convex, as
+	\begin{itemize}[left=0pt, nosep]
+		\item all points on a hypersphere around centroids have same distance to centroids
+		\item hyperspheres are convex
+		\item $k$-Means attempts to minimize distances to centroids
+	\end{itemize}
+\end{itemize}
+
+\pagebreak
+
+\begin{question}
+	How can we improve upon the complexity of $k$-Medoid?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item complexity according to lecture: $O(t \cdot k \cdot (n-k)^2)$
+	\item can reduce number of iterations $t$, but that might just prevent proper convergence
+	\item main problem: in each iteration,
+	\begin{itemize}[left=0pt, nosep]
+		\item consider each pair of medoid and non-medoid $\rightarrow O(k \cdot (n-k))$
+		\item compute change in objective function $\rightarrow O(n-k)$
+	\end{itemize}
+	\item improvement 1: CLARA
+	\begin{itemize}[left=0pt, nosep]
+		\item naming: `Clustering LARge Applications'
+		\item run PAM on sample of size $n' < n$
+		\item replaces $n$ with $n'$ in complexity estimate
+	\end{itemize}
+	\item improvement 2: CLARANS
+	\begin{itemize}[left=0pt, nosep]
+		\item naming: `Clustering LARge Applications based upon RANdomized Search'
+		\item use full dataset (so not an extension of CLARA!)
+		\item randomly select medoid $numlocal$ times (instead $t \cdot k$)
+		\item for medoid, randomly select non-medoid at most $maxneighbor$ times (instead $n-k$)
+		\item overall complexity: $O(numlocal \cdot maxneighbor \cdot (n-k))$
+	\end{itemize}
+	\item improvement 3 (not in lecture): \href{https://doi.org/10.1016/j.is.2021.101804}{FasterPAM}
+	\begin{itemize}[left=0pt, nosep]
+		\item same results as PAM, but $O(k)$ speedup due to improved medoid swapping
+	\end{itemize}
+\end{itemize}
+
+\begin{question}
+	How does OPTICS work?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item density-based clustering algorithm
+	\item naming: `Ordering Points To Identify the Clustering Structure'
+	\item usually for numeric data, but actually combinable with arbitrary dissimilarity measure
+	\item hyperparameters:
+	\begin{itemize}[left=0pt, nosep]
+		\item $MinPts$: min number of points in neighborhood to make point \emph{core} (as in DBSCAN)
+		\item $\epsilon$: max neighborhood radius (different to DBSCAN, despite same name)
+	\end{itemize}
+	\item output: no clustering, but ordered list of points with core/reachability distances
+	\begin{itemize}[left=0pt, nosep]
+		\item can be used to create reachability plot
+		\item can be used to create fixed, DBSCAN-like clustering (by choosing some $\epsilon^* < \epsilon$)
+		\item in particular, can extract clusterings with different density thresholds
+		\item in particular, can use reachability plot to select a sensible $\epsilon^*$
+	\end{itemize}
+	\item important definitions:
+	\begin{itemize}[left=0pt, nosep]
+		\item core distance: min neighborhood radius of a point to make it \emph{core}
+		\item reachability distance: min distance such point directly density reachable from other
+		\begin{itemize}[left=0pt, nosep]
+			\item at least actual distance between the two points
+			\item at least core distance of second point
+		\end{itemize}
+	\end{itemize}
+	\item procedure:
+	\begin{itemize}[left=0pt, nosep]
+		\item process each point exactly once
+		\begin{itemize}[left=0pt, nosep]
+			\item retrieve neighbors and compute core distance
+			\item write point to output (it is processed now)
+			\item check if point \emph{core}; if yes, update reachability distances of unprocessed neighbors
+		\end{itemize}
+		\item maintain priority list
+		\begin{itemize}[left=0pt, nosep]
+			\item points ordered by minimum reachability distance to all points in output
+			\item process points in this order (other than DBSCAN, which uses arbitrary order)
+		\end{itemize}
+	\end{itemize}
+	\item complexity: $O(n \cdot \log n)$ with spatial index structure for neighborhood queries
+	\begin{itemize}[left=0pt, nosep]
+		\item also, $\epsilon$ must not be not too high for efficient neighborhood queries
+		\item $O(n^2)$ with naive implementation (neighborhood queries in $O(n)$)
+	\end{itemize}
+\end{itemize}
+
+\begin{question}
+	How does $k$-Mode work?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item partitioning-clustering algorithm for categorical data
+	\item hyperparameter: number of clusters $k$
+	\item output: cluster centroids, cluster assignments (latter can be computed with former)
+	\item complexity: $O(t \cdot k \cdot n)$ with $t$ iterations and $n$ points
+	\item procedure similar to $k$-Means, i.e., repeatedly
+	\begin{itemize}[left=0pt, nosep]
+		\item assign points to their closest centroids
+		\item re-compute centroids from points assigned to them
+	\end{itemize}
+	\item adaptation 1: Hamming distance instead of Euclidean distance
+	\begin{itemize}[left=0pt, nosep]
+		\item reason: data is categorical instead of numeric
+		\item thus, cannot say how different points are, only if attribute values are different or not
+		\item Hamming distance sums (binary) differences over all attributes
+	\end{itemize}
+	\item adaptation 2: centroid computation
+	\begin{itemize}[left=0pt, nosep]
+		\item for categorical data, cannot compute mean
+		\item instead, take the mode (most frequent value) of each attribute separately
+		\item centroid might not be an actual point from dataset (but applies to $k$-Means as well)
+	\end{itemize}
+\end{itemize}
+
+\subsection*{Chapter 8: Outlier Detection}
+
+\begin{question}
+	Why should outlier detection be considered unsupervised?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item outlier-detection problems (datasets) typically don't have class labels
+	\begin{itemize}[left=0pt, nosep]
+		\item by definition, that's unsupervised learning
+		\item in literature, also outlier detection with partially or fully labeled datasets
+	\end{itemize}
+	\item outliers don't form a clearly defined target
+	\begin{itemize}[left=0pt, nosep]
+		\item are rare
+		\item are diverse: usually not only distinct from `normal' data, but also other outliers
+		\item i.e., no unique concept/distribution behind them, so characterization difficult
+	\end{itemize}
+\end{itemize}
+
+\begin{question}
+	For $k$-distance-based outliers, what are the dangers of setting $k$ very low or very high?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item $k$ very low: doesn't recognize outliers if close to a few other outliers
+	\begin{itemize}[left=0pt, nosep]
+		\item e.g., for $k=1$, two outliers close to each other won't be recognized
+	\end{itemize}
+	\item $k$ very high: small clusters in data (distant from remaining data) recognized as outliers
+	\begin{itemize}[left=0pt, nosep]
+		\item e.g., imagine $k=50$ and a cluster of 40 points well-separated from remaining points
+	\end{itemize}
+	\item in both examples, depends on use case if you want to label mentioned points as outliers
+\end{itemize}
+
+\begin{question}
+	How do Restricted Boltzmann Machines work for outlier detection?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item two-layer neural networks
+	\begin{itemize}[left=0pt, nosep]
+		\item `visible' and `hidden' neurons connected to each other, but not among themselves
+	\end{itemize}
+	\item try to learn probability distribution of training data
+	\begin{itemize}[left=0pt, nosep]
+		\item various hyperparameters control training, e.g., number of iterations
+		\item model (parameters): weight matrix between neurons, biases of neurons
+	\end{itemize}
+	\item to score a point as outlier, put it in visible layer and compute `free energy'
+	\begin{itemize}[left=0pt, nosep]
+		\item says how unlikely point is, given the learned probability distribution (weights)
+	\end{itemize}
+	\item compared to other neural-network approaches (Autoencoders, Self-Organizing Maps):
+	\begin{itemize}[left=0pt, nosep]
+		\item architecture different
+		\item scoring idea (difference to some learned representation of data) roughly similar
+	\end{itemize}
+\end{itemize}
+
+\end{document}
