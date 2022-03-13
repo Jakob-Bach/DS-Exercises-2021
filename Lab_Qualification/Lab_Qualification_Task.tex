@@ -1,0 +1,86 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{enumitem} % enumerations
+\usepackage{fancyhdr} % header
+\usepackage[a4paper, margin=2.5cm]{geometry} % customize page
+\usepackage[colorlinks=true]{hyperref} % links
+\usepackage{xcolor} % colors
+
+% header
+\pagestyle{fancy}
+\fancyhead[L]{\textbf{Qualification Task}}
+\fancyhead[R]{Data Science Laboratory Course -- Summer 2022}
+
+% colors and commands
+\definecolor{kitgreen}{HTML}{00876C}
+\definecolor{kitblue}{HTML}{4664AA}
+
+\hypersetup{allcolors=kitblue}
+
+\newcommand{\code}[1]{\textcolor{kitgreen}{\texttt{#1}}}
+
+\begin{document}
+
+\noindent
+If you want to take the \code{Data Science Laboratory Course} in summer 2022, you need to solve this task.
+If you don't want to participate in the practical course, you can use this task as an additional exercise.
+However, we won't publish a solution.
+
+\paragraph*{Scenario}
+
+We modeled a \href{https://en.wikipedia.org/wiki/Spectrum_auction#Simultaneous_ascending_multiple-round_auction}{simultaneous-multi-round auction} with four bidders and six products as a business process.
+Next, we used a \href{https://en.wikipedia.org/wiki/Model_checking}{model checker} to verify whether certain outcomes of the auction are possible or not, e.g., if a certain bidder can win a certain product at a certain price.
+(Understanding how the auction or the verification procedure works isn't necessary to solve the task.)
+An outcome of the auction consists of a \code{price} for a \code{product}, and sometimes a \code{winner} (can be zero if only the price is verified).
+Verification also depends on the \code{capacities} of the four bidders.
+Capacities tell how many products a bidder is allowed to win.
+Our goal is to find out if the \code{verification\_result} becomes true or not, depending on the outcome and the capacities.
+
+\paragraph{Task}
+
+Create a \code{Jupyter Notebook} to analyze the given scenario.
+We provide training data (feature values and target variable) and test data (only target variable).
+Your notebook needs to contain the following steps:
+
+\begin{enumerate}[left=0pt, topsep=0pt, noitemsep]
+	\item \textbf{Exploring} the data, i.e., computing statistics and creating plots.
+	\item \textbf{Training} at least one baseline and at least one proper prediction model.
+	\item \textbf{Evaluating} the model(s) you chose with \code{sklearn.metrics.matthews\_corrcoef()}.
+	\item \textbf{Predicting} on the test data and creating a file with the predictions.
+\end{enumerate}
+
+\paragraph{Assessment}
+
+We will assess your solution according to the following four criteria:
+
+\begin{enumerate}[left=0pt, topsep=0pt, noitemsep]
+	\item \textbf{Methodological quality}, i.e., using suitable data-science techniques and interpreting all results appropriately.
+	\item \textbf{Code quality}, but not quantity.
+	\item \textbf{Prediction quality} on the test data, but only to some extent:
+	Your solution should be better than a baseline, but we don't expect hyperparameter tuning.
+	In fact, we should be able to run your notebook in under a minute on a modern consumer laptop.
+	\item \textbf{Reproducibility} and adhering to the prescribed solution format.
+\end{enumerate}
+
+\paragraph{Submission Format}
+
+\textbf{Hand in your solution till Monday, 28 February 2022.}
+Submit three files individually, i.e., do not put them in a zipped folder:
+A \code{Juypter Notebook}, an HTML export of the notebook, and a prediction file.
+Name your files like \code{NAME\_solution.ipynb}, \code{NAME\_solution.html}, and \code{NAME\_prediction.csv}
+(for example, \code{Jakob\_Bach\_prediction.csv}).
+\textbf{You need to work on the solution for this task on your own.}
+
+The notebook needs to contain your entire code and interpretation of results.
+Also, execute and save it before submission, so it contains all output.
+Make sure it runs in sequential order, i.e., from start to end, without any manual intervention necessary.
+Remove code snippets that don't have a purpose anymore or whose results you don't interpret.
+If your solution uses packages not contained in the exercises' \code{requirements.txt}, please provide a requirements file.
+
+Assume the input data are stored in a directory \code{data/}, located in the same directory as your notebook.
+Save the prediction file to \code{data/} as well.
+The format of the prediction file needs to be the same as for the \code{target} file of the training data,
+i.e., a one-column CSV (so actually no commas), the same column name, correct number of data objects, Boolean class labels, and no quotes around values.
+
+\end{document}
