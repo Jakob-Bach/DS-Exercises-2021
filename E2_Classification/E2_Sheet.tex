@@ -1,0 +1,78 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{enumitem} % enumerations
+\usepackage{fancyhdr} % header
+\usepackage[a4paper, margin=2.5cm]{geometry} % customize page
+\usepackage[colorlinks=true]{hyperref} % links
+\usepackage{xcolor} % colors
+
+% header
+\pagestyle{fancy}
+\fancyhead[L]{\textbf{Exercise Sheet 2: Classification}}
+\fancyhead[R]{Data Science 1 -- Winter 21/22}
+
+% colors and commands
+\definecolor{kitgreen}{HTML}{00876C}
+\definecolor{kitblue}{HTML}{4664AA}
+
+\hypersetup{allcolors=kitblue}
+
+\newcommand{\code}[1]{\textcolor{kitgreen}{\texttt{#1}}}
+\newcommand{\taskname}[1]{\textcolor{kitblue}{\textbf{[#1]}}}
+
+\begin{document}
+
+\section*{Setup}
+
+Compared to the previous exercise sheet, you don't need to install any further packages.
+We will work with \code{matplotlib}, \code{pandas}, and \code{scikit-learn}.
+
+\section*{Task: Classification and Evaluation}
+
+The aim of this exercise is to classify data with decision trees and to evaluate the results.
+To this end, we use the \code{iris} dataset from \code{sklearn.datasets} again.
+The type of flower, i.e., the species, is our target variable.
+
+If you want, you can also try one or several of the other classification models and evaluation measures introduced in the lecture.
+\code{scikit-learn} contains implementations of many of them, and the workflow is similar to the one we apply here.
+
+\begin{enumerate}[label=\alph*), left=0pt, itemsep=12pt]
+	\item
+	\taskname{Training}
+	Create an object of class \code{DecisionTreeClassifier} from the package \code{sklearn.tree} and train it.
+	For the beginning, you can leave the hyperparameters of the tree at their defaults and use the full dataset for training.
+	\newline
+	What are disadvantages of such an approach?
+	\item
+	\taskname{Inspection}
+	Create a visual representation of your decision tree with \code{plot\_tree()} from \code{sklearn.tree}.
+	Also, have a look at the properties you can retrieve from the tree object.
+	\newline
+	Does the structure (e.g., the splits) of the tree make sense, given the plots we created and the statistical tests we conducted for the first exercise sheet?
+	Which features were the most important ones during training?
+	\item
+	\taskname{Evaluation}
+	Apply k-fold cross-validation to evaluate your model properly.
+	You may use \code{StratifiedKFold} from \code{sklean.model\_selection} or implement it manually.
+	For each train-test split, fit a model, make predictions, and store train accuracy as well as test accuracy.
+	You may compute accuracy with the method \code{score()} of the tree object, \code{accuracy\_score()} from \code{sklearn.metrics}, or manually.
+	\newline
+	How do you interpret the results?
+	Why did we stratify the split?
+	\item
+	\taskname{Baseline}
+	Determine the accuracy of simply predicting the most frequent class.
+	You may use \code{DummyClassifier} from \code{sklearn.dummy} or compute it manually.
+	\newline
+	How does knowing this accuracy influence our evaluation of prediction models?
+	\item
+	\taskname{Hyperparameter Tuning}
+	Learn decision trees of different complexity by passing adequate hyperparameter values in the creation of \code{DecisionTreeClassifier} objects.
+	You may, for example, vary the maximum depth of the tree.
+	\newline
+	How does varying this hyperparameter affect the resulting train and test accuracy?
+	Which value would you recommend for the hyperparameter?
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,153 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{enumitem} % enumerations
+\usepackage{fancyhdr} % header
+\usepackage[a4paper, margin=2.5cm]{geometry} % customize page
+\usepackage[colorlinks=true]{hyperref} % links
+\usepackage{tcolorbox} % layout for questions
+\usepackage{xcolor} % colors
+
+% header
+\pagestyle{fancy}
+\fancyhead[L]{\textbf{Exercise Session 3: Association Rules}}
+\fancyhead[R]{Data Science 1 -- Winter 21/22}
+
+% colors and commands
+\definecolor{kitgreen}{HTML}{00876C}
+\definecolor{kitblue}{HTML}{4664AA}
+\definecolor{kitlightgreen}{HTML}{CCE7E2} % lighter version of KIT green, not an official KIT color, created with help of https://www.tutorialrepublic.com/html-reference/html-color-picker.php
+
+\hypersetup{allcolors=kitblue}
+
+\newcommand{\code}[1]{\textcolor{kitgreen}{\texttt{#1}}}
+
+\newtcolorbox{question}{
+	colback=kitlightgreen,
+	sharp corners, % if rounded, can use "arc" to determine curvature
+	boxrule=0pt, % no frame ...
+	leftrule=5pt, % ... but on the left
+	colframe=kitgreen,
+	boxsep=0pt, % padding added on all sides
+	left=5pt,
+	right=5pt,
+	top=5pt,
+	bottom=5pt
+}
+
+\begin{document}
+
+\section*{General Q\&A}
+
+No questions.
+
+\section*{Theory Tasks}
+
+\subsection*{Chapter 6: Association Rules}
+
+\begin{question}
+	Why can support/confidence for association rules be misleading?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item support:
+	\begin{itemize}[left=0pt, nosep]
+		\item measure that can also be applied to plain itemsets, not only association rules
+		\item quantifies how often itemsets on LHS and RHS of association rule occur together
+		\item i.e., tells how often rule satisfied (relative to number of transactions or absolute)
+		\item but does not consider how often rule is invalid (only LHS satisfied) $\rightarrow$ use confidence
+	\end{itemize}
+	\item confidence:
+	\begin{itemize}[left=0pt, nosep]
+		\item normalizes support of association rule with support of LHS
+		\item conceptually similar to metric \emph{precision} in classification
+		\item asymmetric measure: does not consider support of RHS
+		\begin{itemize}[left=0pt, nosep]
+			\item might be high even if there is negative correlation between LHS and RHS
+			\item in particular, danger if support of RHS is high already without LHS
+			\item see basketball/cereal example from lecture
+		\end{itemize}
+		\item in contrast, \emph{lift} is symmetric quality measure (but has other weaknesses)
+	\end{itemize}
+\end{itemize}
+
+\begin{question}
+	Do you see a relationship between association rules and decision trees?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item at first glance, very different approaches
+	\begin{itemize}[left=0pt, nosep]
+		\item association rules are unsupervised (no target variable)
+		\begin{itemize}[left=0pt, nosep]
+			\item decision trees are supervised
+		\end{itemize}
+		\item association rules work with transactions of (feature-less and target-less) items
+		\begin{itemize}[left=0pt, nosep]
+			\item decision trees work with feature-target representation of data objects
+		\end{itemize}
+		\item association rules might not apply (if LHS of rule not contained in transaction)
+		\begin{itemize}[left=0pt, nosep]
+			\item decision trees classify each data object (they partition data space fully)
+		\end{itemize}
+		\item association rules are individual rules
+		\begin{itemize}[left=0pt, nosep]
+			\item decision trees are a hierarchical structure of rules (applied in combination)
+		\end{itemize}
+	\end{itemize}
+	\item main similarity: both approaches use if-then rules
+	\begin{itemize}[left=0pt, nosep]
+		\item association rules: if transaction contains LHS, then it also should contain RHS
+		\item decision tree: if feature has certain value, follow corresponding path and either test another feature (internal node) or assign class label (leaf node)
+	\end{itemize}
+	\item you can apply association rules to tabular feature-target data
+	\begin{itemize}[left=0pt, nosep]
+		\item step 1: transform dataset into transaction-item representation
+		\begin{itemize}[left=0pt, nosep]
+			\item each data object becomes a transaction
+			\item each feature value or target value becomes an item
+			\item thus, each transaction has same length
+			\item don't forget feature/target name $\rightarrow$ multi-dimensional itemset (see the lecture)
+			\item need to discretize features (unlike decision trees, which support numeric features)
+			\item exemplary transaction for a data object from the \code{iris} dataset: \{sepal.length=short, sepal.width=long, petal.length=short, petal.width=short, species=setosa\}
+			\item i.e., values of four features and a target transformed to transaction with five items
+		\end{itemize}
+		\item step 2: mine multi-dimensional association rules
+		\begin{itemize}[left=0pt, nosep]
+			\item rules like \{petal.width=short\} $\rightarrow$ \{petal.width=long\} cannot occur
+			\item also, we want rules where feature values are on LHS and a target value is on RHS
+			\item (we could also mine rules to explore relationships between features)
+			\item these constraints might make mining (candidate generation) more efficient
+		\end{itemize}
+		\item step 3: post-process rules
+		\begin{itemize}[left=0pt, nosep]
+			\item problem: zero, one, or multiple rules might apply to features of a data object
+			\item need to define default prediction if no rule matches
+			\item need to decide what to do if multiple rules match, e.g., bring rules into an order
+		\end{itemize}
+		\item exemplary algorithm: CBA (Classification Based on Associations) from paper \href{https://www.aaai.org/Papers/KDD/1998/KDD98-012.pdf}{``Integrating Classification and Association Rule Mining''}
+		\item exemplary Python package: \code{pyarc}
+	\end{itemize}
+\end{itemize}
+
+\begin{question}
+	How does sorting help in FP-trees?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item sorting by frequency is integral component of original FP-tree algorithm
+	\begin{itemize}[left=0pt, nosep]
+		\item done between first scan of database (count items) and second scan (build tree)
+	\end{itemize}
+	\item \emph{prefix path property} of algorithm depends on frequency sorting of items in transactions
+	\begin{itemize}[left=0pt, nosep]
+		\item bonus task: does algorithm work with arbitrary (potentially fixed) order of items?
+	\end{itemize}
+	\item sorting by frequency improves efficiency
+	\begin{itemize}[left=0pt, nosep]
+		\item FP-tree smaller (has less paths) if transactions share first few items (so-called prefix)
+		\item more frequent items more likely to be shared, thus sorted to beginning of transactions
+	\end{itemize}
+\end{itemize}
+
+\end{document}

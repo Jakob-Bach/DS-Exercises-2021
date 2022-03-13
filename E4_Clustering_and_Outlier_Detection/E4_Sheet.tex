@@ -1,0 +1,82 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{enumitem} % enumerations
+\usepackage{fancyhdr} % header
+\usepackage[a4paper, margin=2.5cm]{geometry} % customize page
+\usepackage[colorlinks=true]{hyperref} % links
+\usepackage{xcolor} % colors
+
+% header
+\pagestyle{fancy}
+\fancyhead[L]{\textbf{Exercise Sheet 4: Clustering and Outlier Detection}}
+\fancyhead[R]{DS 1 -- Winter 21/22}
+
+% colors and commands
+\definecolor{kitgreen}{HTML}{00876C}
+\definecolor{kitblue}{HTML}{4664AA}
+
+\hypersetup{allcolors=kitblue}
+
+\newcommand{\code}[1]{\textcolor{kitgreen}{\texttt{#1}}}
+\newcommand{\taskname}[1]{\textcolor{kitblue}{\textbf{[#1]}}}
+
+\begin{document}
+
+\section*{Setup}
+
+Compared to the previous exercise sheets, you should install \code{pydataset}.
+If you have used the \code{requirements.txt} from ILIAS to set up your environment, you already have this dependency available.
+We will also work with \code{matplotlib}, \code{numpy}, \code{pandas}, \code{scikit-learn}, and \code{seaborn} again.
+
+\section*{Task: Clustering and Outlier Detection}
+
+The aim of this exercise is to apply clustering and outlier-detection approaches.
+We work with the \code{faithful} dataset, which you can obtain from package \code{pydataset} with \code{data('faithful')}.
+The \href{https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/faithful}{dataset} contains eruption times and (between-eruption) waiting times for the \href{https://en.wikipedia.org/wiki/Old_Faithful}{geyser Old Faithful}.
+
+\begin{enumerate}[label=\alph*), left=0pt, itemsep=12pt]
+	\item
+	\taskname{Visualization}
+	Load the data and normalize it with the help of \code{scale()} from \code{sklearn.preprocessing}.
+	Create a scatter plot of the data points and create histograms of their distribution.
+	In particular, also use two-dimensional histograms, which are available in \code{matplotlib} as well as \code{seaborn}.
+	\newline
+	Where are potential clusters?
+	Which points might be outliers?
+	Why have we normalized the data beforehand?
+	\item
+	\taskname{K-Means}
+	Train an instance of \code{KMeans} from \code{sklearn.cluster}.
+	Visualize the results (e.g., by coloring the points according to their cluster membership in a scatter plot) for different values of \textit{k}.
+	Use \code{silhouette\_score()} from \code{sklearn.metrics} to assess the quality of the k-means results.
+	\newline
+	Why does k-means produce these results?
+	Is the silhouette coefficient a useful metric to assess clustering quality here?
+	\item
+	\taskname{DBSCAN}
+	Train an instance of \code{DBSCAN} from \code{sklearn.cluster} and visualize the result as before.
+	\newline
+	Why do you obtain such a result?
+	Can you leverage the silhouette coefficient to search for hyperparameter values that yield a better clustering result?
+	\item
+	\taskname{OPTICS}
+	Train an instance of \code{OPTICS} from \code{sklearn.cluster} and create a reachability plot based on properties of the trained instance.
+	\newline
+	Can you use this plot to determine a good value for DBSCAN's hyperparameter $\epsilon$?
+	\item
+	\taskname{Outlier Detection}
+	Detect outliers in the data with the help of \code{NearestNeighbors} from \code{sklearn.neighbors}, a distance-based approach, and \code{LocalOutlierFactor} from \code{sklearn.neighbors}, a density-based approach.
+	Visualize the data points together with their outlier scores, e.g., by scaling the size and/or color of the points in a scatter plot accordingly.
+	\newline
+	For which data points do the results of the two approaches differ strongly, and why?
+	\item
+	\taskname{Subspace Outliers}
+	Calculate the outlier scores for each feature of the dataset separately.
+	Compare these results to your previous two-dimensional approach.
+	\newline
+	Are there points that only appear to be outliers in one subspace?
+	Are there non-trivial outliers in the data?
+\end{enumerate}
+
+\end{document}

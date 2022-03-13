@@ -1,0 +1,339 @@
+\documentclass[12pt]{article}
+
+% packages
+\usepackage{enumitem} % enumerations
+\usepackage{fancyhdr} % header
+\usepackage[a4paper, margin=2.5cm]{geometry} % customize page
+\usepackage[colorlinks=true]{hyperref} % links
+\usepackage{tcolorbox} % layout for questions
+\usepackage{xcolor} % colors
+
+% header
+\pagestyle{fancy}
+\fancyhead[L]{\textbf{Exercise Session 1: Fundamentals}}
+\fancyhead[R]{Data Science 1 -- Winter 21/22}
+
+% colors and commands
+\definecolor{kitgreen}{HTML}{00876C}
+\definecolor{kitblue}{HTML}{4664AA}
+\definecolor{kitlightgreen}{HTML}{CCE7E2} % lighter version of KIT green, not an official KIT color, created with help of https://www.tutorialrepublic.com/html-reference/html-color-picker.php
+
+\hypersetup{allcolors=kitblue}
+
+\newtcolorbox{question}{
+	colback=kitlightgreen,
+	sharp corners, % if rounded, can use "arc" to determine curvature
+	boxrule=0pt, % no frame ...
+	leftrule=5pt, % ... but on the left
+	colframe=kitgreen,
+	boxsep=0pt, % padding added on all sides
+	left=5pt,
+	right=5pt,
+	top=5pt,
+	bottom=5pt
+}
+
+\begin{document}
+
+\section*{General Q\&A}
+
+No questions.
+
+\section*{Theory Tasks}
+
+\subsection*{Chapter 1: Introduction}
+
+\begin{question}
+	Explain the difference between over- and underfitting!
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item overfitting:
+	\begin{itemize}[left=0pt, nosep]
+		\item model is too complex for dataset
+		\item model also captures outliers/noise that are not generalizable
+	\end{itemize}
+	\item underfitting:
+	\begin{itemize}[left=0pt, nosep]
+		\item model is too simple for dataset
+		\item model not able to capture general trend in data properly
+	\end{itemize}
+\end{itemize}
+
+\begin{question}
+	How can we use training data and validation/test data to avoid overfitting?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item can observe overfitting as difference in prediction performance between training data and validation/test data
+	\item in particular, models might be better on data they are trained on than on separate data
+	\item thus, should split data into training part and validation/test part
+	\item train models on training data only
+	\item make predictions and observe prediction performance mainly on validation/test data
+	\item split methods like holdout split, cross-validation, etc. will be discussed in a later lecture
+\end{itemize}
+
+\begin{question}
+	How can we avoid overfitting when trying to decide which order of regression model to fit to our data?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item split data into training part and validation part
+	\item train models of different order on training data
+	\item compare models on validation data; pick the one with highest prediction performance
+	\item this should result in best compromise between underfitting and overfitting
+	\item in contrast, on training data, prediction performance probably just gets better the more complex the model gets
+\end{itemize}
+
+\begin{question}
+	Explain the One-Rule algorithm! Why is it used for small/noisy datasets?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item rough explanation:
+	\begin{itemize}[left=0pt, nosep]
+		\item check for each value of each feature which class is most frequent
+		\item count all data objects with deviating class labels as classification errors
+		\item count number of errors per feature
+		\item pick feature with lowest error
+		\item for numeric features, discretization necessary
+	\end{itemize}
+	\item benefits: very simple model, less prone to overfitting than more complex models
+	\begin{itemize}[left=0pt, nosep]
+		\item makes it suitable for small/noisy datasets
+		\item main danger causing overfitting: features with many values
+		\begin{itemize}[left=0pt, nosep]
+			\item can also happen for categorical features, not only numeric ones
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+\subsection*{Chapter 2: Fundamentals}
+
+\subsubsection*{Data \& Descriptive Statistics}
+
+\begin{question}
+	How can you categorize data?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item basic categorization from lecture:
+	\begin{itemize}[left=0pt, nosep]
+		\item categorical
+		\begin{itemize}[left=0pt, nosep]
+			\item nominal
+			\item ordinal
+		\end{itemize}
+		\item numerical
+		\begin{itemize}[left=0pt, nosep]
+			\item discrete
+			\item continuous
+		\end{itemize}
+	\end{itemize}
+	\item other categorizations possible, e.g., by dimensionality (part of lecture as well):
+	\begin{itemize}[left=0pt, nosep]
+		\item one-dimensional (univariate)
+		\item multi-dimensional (multivariate); special cases:
+		\begin{itemize}[left=0pt, nosep]
+			\item two-dimensional (bivariate)
+			\item high-dimensional (definition of `high' depends on use case)
+		\end{itemize}
+		\item dimensionless
+	\end{itemize}
+\end{itemize}
+
+\begin{question}
+	Compare the three types of aggregates!
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item distributive: store only the desired aggregate for each partition of data
+	\item algebraic: store multiple (but fixed number of) aggregates for each partition of data
+	\item holistic: number of aggregates to be stored for each partition is potentially unlimited
+	\begin{itemize}[left=0pt, nosep]
+		\item i.e., in worst case, need to store all data objects, so no aggregation at all
+	\end{itemize}
+\end{itemize}
+
+\begin{question}
+	Why are distributive aggregates efficient?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item need only to store one aggregate for each (arbitrarily large) partition of data
+	\item from partition aggregates, can directly compute value of aggregate for full dataset
+	\begin{itemize}[left=0pt, nosep]
+		\item i.e., without needing to look into (individual data objects of) partitions again
+	\end{itemize}
+	\item can also be easily updated if new data arrives:
+	\begin{itemize}[left=0pt, nosep]
+		\item i.e., self-maintainable regarding insertion
+		\item first, compute aggregate on new data
+		\item second, combine with aggregate on old data to get overall value of aggregate
+	\end{itemize}
+\end{itemize}
+
+\begin{question}
+	What is the difference between variance and covariance?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item variance
+	\begin{itemize}[left=0pt, nosep]
+		\item univariate statistic
+		\item describes how much a random variable varies around its expected value (i.e., mean)
+		\item $Var(x) = \frac{1}{n} \sum_{i=1}^{n} (x_i - \overline{x})^2$ (population variance)
+	\end{itemize}
+	\item covariance
+	\begin{itemize}[left=0pt, nosep]
+		\item bivariate statistic
+		\item describes how much two random variables vary in same direction
+		\item $Cov(x,y) = \frac{1}{n} \sum_{i=1}^{n} (x_i - \overline{x}) (y_i - \overline{y})$
+		\item unnormalized (gets larger if you scale variables larger, e.g., multiply with factor)
+		\begin{itemize}[left=0pt, nosep]
+			\item Pearson correlation is a normalized version of this statistic
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+\subsubsection*{Statistical Tests}
+
+\begin{question}
+	What is the null hypothesis of the $\chi^2$ test?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item in lecture: two random variables are independent
+	\item more general: check frequencies of one random variable against some distribution
+\end{itemize}
+
+\begin{question}
+	How can one conduct feature selection with the $\chi^2$ test?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item see subtask f) of first programming-exercise sheet
+	\item $\chi^2$ test statistic collects evidence against independence of random variables
+	\item i.e., it can be used as a measure of dependency
+	\begin{itemize}[left=0pt, nosep]
+		\item if you want a normalized measure, can use \emph{1 - p-value} as well
+	\end{itemize}
+	\item use case 1: only select features that show highest dependency to target variable
+	\begin{itemize}[left=0pt, nosep]
+		\item i.e., keep most relevant features
+		\item can be absolute number (select top $k$ features)
+		\item can be threshold-based (select all features with a p-value lower than some threshold)
+	\end{itemize}
+	\item use case 2: if two features show a strong dependency to each other, remove one of them
+	\begin{itemize}[left=0pt, nosep]
+		\item i.e., reduce redundancy in data
+	\end{itemize}
+\end{itemize}
+
+\begin{question}
+	Does the $\chi^2$ test also work if random variables have a non-normal distribution?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item yes
+	\item non-parametric test, i.e., does not assume any distribution
+	\item also, works with categorical data (which are not normally distributed anyway)
+\end{itemize}
+
+\begin{question}
+	Assume two samples are given.
+	Is the following statement correct?
+	``If a Kolmogorov-Smirnov test concludes that both samples were not drawn from the same distribution, then a Wilcoxon-Mann-Whitney test is redundant.''
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item Wilcoxon-Mann-Whitney test compares distributions based on median
+	\item KS test compares distributions based on whole cumulative distribution function
+	\item thus, KS test seems more general and Wilcoxon-Mann-Whitney test seems redundant
+	\item if it comes to actual statistical power, situation is more complicated, as paper \href{https://www.scienpress.com/download.asp?ID=918}{Comparison of the Powers of the Kolmogorov-Smirnov Two-Sample Test and the Mann-Whitney Test for Different Kurtosis and Skewness Coefficients Using the Monte Carlo Simulation Method} shows
+	\item decision also depends on what you actually want to compare
+	\begin{itemize}[left=0pt, nosep]
+		\item in some situations, you are only interested in central tendency of distribution
+		\item i.e., spread of distribution, long tails, etc. might be irrelevant for you
+	\end{itemize}
+\end{itemize}
+
+\pagebreak
+
+\subsubsection*{Data Reduction}
+
+\begin{question}
+	Name three different ways to reduce data!
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item numerosity reduction: reduce number of data objects
+	\item dimensionality reduction: reduce number of features
+	\item discretization: reduce number of values per feature
+\end{itemize}
+
+\begin{question}
+	How can you automatically select important features?
+	What do you need to consider to perform feature selection?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item features should be relevant for prediction target
+	\item features should not be redundant to each other
+	\item search strategy for feature sets should be efficient
+	\begin{itemize}[left=0pt, nosep]
+		\item since there are $2^n$ feature sets for $n$ features
+		\item some approaches evaluate each feature individually
+		\begin{itemize}[left=0pt, nosep]
+			\item e.g., how strongly is each feature correlated to target variable
+		\end{itemize}
+		\item some approaches iterate over space of potential feature sets
+		\begin{itemize}[left=0pt, nosep]
+			\item e.g., greedy forward/backward selection, genetic algorithms, etc.
+		\end{itemize}
+		\item some prediction models implicitly select features
+		\begin{itemize}[left=0pt, nosep]
+			\item e.g., decision trees
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+\begin{question}
+	How does PCA work?
+\end{question}
+
+\begin{itemize}[left=0pt, nosep]
+	\item is a dimensionality-reduction technique
+	\item rotation: does not select (original) features, but transforms dataset to new basis
+	\item projection: under new basis, first few features should capture most variance of dataset
+	\item mathematical details:
+	\begin{itemize}[left=0pt, nosep]
+		\item principal components are eigenvectors of covariance matrix of original dataset
+		\begin{itemize}[left=0pt, nosep]
+			\item computation based on covariance matrix is called \emph{eigendecomposition}
+			\item also other ways of computation, e.g., via singular value decomposition (SVD)
+		\end{itemize}
+		\item principle components constitute columns of rotation matrix
+		\begin{itemize}[left=0pt, nosep]
+			\item form an orthonormal basis of feature space
+			\item transformation (rotation) is a simple matrix multiplication
+			\item features under new basis are linear combinations of features from original dataset
+			\item transformation from new basis back to old one is possible as well
+		\end{itemize}
+		\item eigenvalues associated with principal components (eigenvectors) help to project data
+		\begin{itemize}[left=0pt, nosep]
+			\item are proportional to amount of variance captured in principal component
+			\item components in rotation matrix should be ordered by decreasing eigenvalues
+			\item to reduce dimensions, only keep first few columns of rotation matrix
+			\item if you keep all components, transformation is lossless
+		\end{itemize}
+		\item features under new basis are uncorrelated
+		\item to conduct PCA, features should be standardized
+		\begin{itemize}[left=0pt, nosep]
+			\item mean of zero (if PCA computed via covariance matrix, this happens automatically)
+			\item variance of one (else, feature with higher variance dominate result)
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+\end{document}
