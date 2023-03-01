@@ -15,15 +15,19 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 
-DATA_URL = 'https://archive-beta.ics.uci.edu/api/static/ml/datasets/713/data.csv'
-TEMPFILE = 'temp_dataset.csv'  # will be deleted afterwards anyway
-OUTPUT_DIR = 'data/'
+DATA_URL = 'https://archive-beta.ics.uci.edu/static/public/713/auction+verification.zip'
+UCI_CSV_FILE = 'data.csv'  # a particular file in the ZIP, so don't use some arbitrary name here
+TEMPFILE = 'temp_dataset.zip'  # will be deleted afterwards anyway
+OUTPUT_DIR = 'data/'  # set this freely as you like
 
 
 if __name__ == '__main__':
     # Retrieve data
     urllib.request.urlretrieve(url=DATA_URL, filename=TEMPFILE)
-    dataset = pd.read_csv(TEMPFILE)
+    with zipfile.ZipFile(file=TEMPFILE, mode='r') as zip_file:
+        zip_file.extract(member=UCI_CSV_FILE)  # .zip also contains other files
+    dataset = pd.read_csv(UCI_CSV_FILE)
+    os.remove(UCI_CSV_FILE)
     os.remove(path=TEMPFILE)
 
     # Format data
